@@ -1,6 +1,6 @@
-import { Sun, Moon, Shield } from 'lucide-react';
+import { Sun, Moon, Shield, CreditCard } from 'lucide-react';
 
-export default function Profile() {
+export default function Profile({ onNavigate }) {
   return (
     <div className="h-full flex flex-col">
       <div className="px-5 pt-10 pb-4 flex-1 overflow-y-auto scrollbar-hide">
@@ -81,6 +81,20 @@ export default function Profile() {
             </div>
             <span className="text-[12px] text-muted-text">Active</span>
           </div>
+          
+          <button 
+            onClick={() => onNavigate('pricing')}
+            className="w-full flex items-center justify-between py-4"
+          >
+            <div className="flex items-center gap-3">
+              <CreditCard size={18} className="text-ink opacity-60" />
+              <div>
+                <p className="text-[14px] font-medium text-ink">Subscription</p>
+                <p className="text-[12px] text-muted-text">Manage your plan</p>
+              </div>
+            </div>
+            <span className="text-muted-text">→</span>
+          </button>
           
           <div className="flex items-center justify-between py-4">
             <div>

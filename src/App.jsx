@@ -8,6 +8,7 @@ import LocationStep from './components/LocationStep';
 import Mbti from './components/Mbti';
 import FocusMood from './components/FocusMood';
 import Generating from './components/Generating';
+import FirstMirror from './components/FirstMirror';
 import Today from './components/Today';
 import Soulprint from './components/Soulprint';
 import Snapshot from './components/Snapshot';
@@ -15,6 +16,7 @@ import ShareCard from './components/ShareCard';
 import Decode from './components/Decode';
 import Archive from './components/Archive';
 import Profile from './components/Profile';
+import Pricing from './components/Pricing';
 
 const onboardingFlow = [
   'welcome',
@@ -27,6 +29,8 @@ const onboardingFlow = [
 ];
 
 const mainAppTabs = ['today', 'soulprint', 'decode', 'archive', 'profile'];
+
+const onboardingResultScreens = ['firstMirror', 'pricing'];
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('welcome');
@@ -48,13 +52,27 @@ export default function App() {
   };
   
   const handleGeneratingComplete = () => {
+    setCurrentScreen('firstMirror');
+  };
+  
+  const handleFirstMirrorContinue = () => {
     setShowNav(true);
     navigate('today');
+  };
+  
+  const handleFirstMirrorDeepDive = () => {
+    setCurrentScreen('pricing');
+  };
+  
+  const handlePricingBack = () => {
+    setCurrentScreen('firstMirror');
   };
   
   const handleBack = () => {
     if (currentScreen === 'snapshot' || currentScreen === 'shareCard') {
       setCurrentScreen('soulprint');
+    } else if (onboardingResultScreens.includes(currentScreen)) {
+      setCurrentScreen('firstMirror');
     } else {
       const currentIndex = onboardingFlow.indexOf(currentScreen);
       if (currentIndex > 0) {
@@ -80,7 +98,14 @@ export default function App() {
       case 'focusMood':
         return <FocusMood onNext={handleNext} onBack={handleBack} />;
       case 'generating':
-        return <Generating onComplete={handleGeneratingComplete} showNav={false} />;
+        return <Generating onComplete={handleGeneratingComplete} />;
+      case 'firstMirror':
+        return <FirstMirror 
+          onContinue={handleFirstMirrorContinue} 
+          onDeepDive={handleFirstMirrorDeepDive}
+        />;
+      case 'pricing':
+        return <Pricing onBack={handlePricingBack} />;
       case 'today':
         return <Today onNavigate={navigate} />;
       case 'soulprint':
@@ -94,14 +119,16 @@ export default function App() {
       case 'archive':
         return <Archive />;
       case 'profile':
-        return <Profile />;
+        return <Profile onNavigate={navigate} />;
       default:
         return <Welcome onNext={handleNext} />;
     }
   };
   
+  const shouldShowNav = showNav && mainAppTabs.includes(currentScreen);
+  
   return (
-    <PhoneFrame currentScreen={currentScreen} onNavigate={navigate} showNav={showNav}>
+    <PhoneFrame currentScreen={currentScreen} onNavigate={navigate} showNav={shouldShowNav}>
       {renderScreen()}
     </PhoneFrame>
   );
