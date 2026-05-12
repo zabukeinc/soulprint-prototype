@@ -1,16 +1,23 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import ProgressDots from './ProgressDots';
+
+const patternCards = [
+  { title: 'Private Processor', desc: 'You feel more than you show.' },
+  { title: 'Pattern Reader', desc: 'You notice emotional shifts quickly.' },
+  { title: 'Consistency Seeker', desc: 'You trust repeated actions more than big words.' },
+  { title: 'Quiet Intensity', desc: 'You may look calm while processing deeply.' },
+];
 
 export default function FirstMirror({ onContinue, onDeepDive, onSaveCard }) {
   const [feedback, setFeedback] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   
-  const patternCards = [
-    { title: 'Private Processor', desc: 'You feel more than you show.' },
-    { title: 'Pattern Reader', desc: 'You notice emotional shifts quickly.' },
-    { title: 'Consistency Seeker', desc: 'You trust repeated actions more than big words.' },
-    { title: 'Quiet Intensity', desc: 'You may look calm while processing deeply.' },
-  ];
+  const handleContinue = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      onContinue();
+    }, 600);
+  };
   
   return (
     <div className="h-full flex flex-col">
@@ -228,16 +235,32 @@ export default function FirstMirror({ onContinue, onDeepDive, onSaveCard }) {
       </div>
       
       <div className="px-5 pb-4">
-        <button 
-          onClick={onContinue}
-          className="w-full min-h-[48px] rounded-full px-6 font-extrabold text-sm text-white"
+        <motion.button 
+          onClick={handleContinue}
+          disabled={isLoading}
+          className="w-full min-h-[48px] rounded-full px-6 font-extrabold text-sm text-white flex items-center justify-center gap-2"
           style={{
-            background: 'linear-gradient(135deg, #8B72CF, #16A7A0)',
+            background: isLoading 
+              ? 'rgba(139,114,207,0.6)' 
+              : 'linear-gradient(135deg, #8B72CF, #16A7A0)',
             boxShadow: '0 8px 24px rgba(139,114,207,0.2)'
           }}
         >
-          Continue to Today
-        </button>
+          {isLoading ? (
+            <>
+              <motion.span
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                className="inline-block"
+              >
+                ✦
+              </motion.span>
+              <span>Entering...</span>
+            </>
+          ) : (
+            'Continue to Today'
+          )}
+        </motion.button>
       </div>
     </div>
   );
