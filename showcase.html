@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soulprint — Decode Your Emotional Blueprint</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #F7F2EA;
+      --cream: #FFF9EF;
+      --sage: #DDEDDC;
+      --lavender: #E8DDFB;
+      --peach: #F8DCCB;
+      --ink: #1F2130;
+      --muted: #7A7C8C;
+      --teal: #16A7A0;
+      --purple: #8B72CF;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .serif { font-family: 'Playfair Display', Georgia, serif; }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 10% 5%, rgba(232,221,251,0.9), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(221,237,220,0.9), transparent 32%),
+        radial-gradient(circle at 50% 95%, rgba(248,220,203,0.7), transparent 30%),
+        linear-gradient(135deg, #F2EDE3, #EAF5EC 52%, #EFEAF7 100%);
+      z-index: 0;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 100px;
+      background: rgba(139,114,207,0.12);
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(40px, 8vw, 72px);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      max-width: 640px;
+    }
+
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, #8B72CF, #16A7A0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      border-radius: 100px;
+      border: none;
+      background: linear-gradient(135deg, #8B72CF, #16A7A0);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(139,114,207,0.25);
+      text-decoration: none;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      border-radius: 100px;
+      border: 1px solid rgba(31,33,48,0.12);
+      background: rgba(255,255,255,0.8);
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* Phone mockup */
+    .phone-section {
+      padding: 0 24px 80px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .phone-mockup {
+      width: 340px;
+      height: 720px;
+      border-radius: 42px;
+      padding: 12px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(255,255,255,0.45));
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 22px 60px rgba(99,82,60,0.14);
+      position: relative;
+    }
+
+    .phone-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 34px;
+      overflow: hidden;
+      position: relative;
+      background:
+        radial-gradient(circle at 18% 0%, rgba(232,221,251,0.9), transparent 36%),
+        radial-gradient(circle at 82% 14%, rgba(221,237,220,0.95), transparent 32%),
+        radial-gradient(circle at 70% 86%, rgba(248,220,203,0.8), transparent 32%),
+        linear-gradient(180deg, #FFFDF7, #F7F2EA 58%, #EEF7EF 100%);
+    }
+
+    .phone-notch {
+      width: 88px;
+      height: 24px;
+      background: #050506;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 0 0 16px 16px;
+      z-index: 50;
+    }
+
+    .phone-content {
+      padding: 48px 20px 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .phone-content .greeting { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+    .phone-content .name { font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 500; margin-bottom: 16px; }
+
+    .mood-row { display: flex; gap: 8px; margin-bottom: 16px; }
+    .mood-btn {
+      flex: 1;
+      padding: 8px 4px;
+      border-radius: 16px;
+      border: 1px solid rgba(31,33,48,0.08);
+      background: rgba(255,255,255,0.72);
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .mood-btn .emoji { font-size: 18px; display: block; margin-bottom: 2px; }
+    .mood-btn.active {
+      background: linear-gradient(135deg, #8B72CF, #16A7A0);
+      color: white;
+      border: none;
+      box-shadow: 0 8px 20px rgba(139,114,207,0.2);
+    }
+
+    .signal-card {
+      border-radius: 28px;
+      padding: 20px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #E7DDFC, #DCF0E3 55%, #F8DCCB);
+      border: 1px solid rgba(31,33,48,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .signal-card .label { font-size: 11px; letter-spacing: 0.14em; color: var(--purple); text-transform: uppercase; font-weight: 800; margin-bottom: 8px; }
+    .signal-card h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 20px; line-height: 1.15; margin-bottom: 8px; }
+    .signal-card p { font-size: 12px; color: var(--muted); }
+
+    .metric-row { display: flex; gap: 8px; margin-bottom: 16px; }
+    .metric {
+      flex: 1;
+      padding: 10px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(31,33,48,0.08);
+      text-align: center;
+    }
+    .metric .bar { width: 100%; height: 6px; border-radius: 6px; background: rgba(31,33,48,0.06); margin-bottom: 6px; overflow: hidden; }
+    .metric .bar-fill { height: 100%; border-radius: 6px; }
+    .metric strong { display: block; font-size: 13px; margin-bottom: 2px; }
+    .metric span { font-size: 10px; color: var(--muted); }
+
+    /* Features */
+    .features {
+      padding: 80px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .features h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .features .subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 17px;
+      margin-bottom: 56px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      border-radius: 28px;
+      padding: 28px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(31,33,48,0.08);
+      box-shadow: 0 12px 30px rgba(99,82,60,0.09);
+    }
+
+    .feature-card .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 18px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* CTA */
+    .cta {
+      padding: 80px 24px;
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 500;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .cta p {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 440px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+
+    .tech-stack {
+      padding: 0 24px 40px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .tech-stack h3 {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    .tech-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .tech-pill {
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(31,33,48,0.08);
+      color: var(--ink);
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid rgba(31,33,48,0.06);
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 40px 16px; }
+      .phone-mockup { width: 300px; height: 636px; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-badge">Emotional Intelligence App</div>
+    <h1>Decode your <span class="gradient">emotional blueprint</span></h1>
+    <p>Soulprint reads the pattern beneath your chart — not what you were born with, but how you carry it. Warm, private, and built for people who feel more than they show.</p>
+    <div class="hero-actions">
+      <a href="#demo" class="btn-primary">See the prototype ↓</a>
+      <a href="https://github.com/regyanax/soulprint" target="_blank" class="btn-secondary">View on GitHub</a>
+    </div>
+  </section>
+
+  <section id="demo" class="phone-section">
+    <div class="phone-mockup">
+      <div class="phone-inner">
+        <div class="phone-notch"></div>
+        <div class="phone-content">
+          <p class="greeting">Good evening 🌤</p>
+          <h2 class="name">Gy</h2>
+
+          <p style="font-size:13px;font-weight:500;color:#1F2130;margin-bottom:8px;">How are you feeling right now?</p>
+          <div class="mood-row">
+            <div class="mood-btn"><span class="emoji">💛</span>Steady</div>
+            <div class="mood-btn active"><span class="emoji">🌊</span>Emotional</div>
+            <div class="mood-btn"><span class="emoji">⚡</span>Restless</div>
+            <div class="mood-btn"><span class="emoji">🧊</span>Numb</div>
+          </div>
+
+          <div class="signal-card">
+            <p class="label">Today's Signal</p>
+            <h3>Your mind wants clarity, but your heart needs emotional evidence.</h3>
+            <p>A calm day for naming what you usually keep private.</p>
+          </div>
+
+          <div class="metric-row">
+            <div class="metric">
+              <div class="bar"><div class="bar-fill" style="width:72%;background:linear-gradient(90deg,#8B72CF,#16A7A0)"></div></div>
+              <strong>Calm</strong>
+              <span>weather</span>
+            </div>
+            <div class="metric">
+              <div class="bar"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#E8A87C,#F7D875)"></div></div>
+              <strong>Direct</strong>
+              <span>best move</span>
+            </div>
+            <div class="metric">
+              <div class="bar"><div class="bar-fill" style="width:40%;background:linear-gradient(90deg,#F4C7D2,#8B72CF)"></div></div>
+              <strong>Testing</strong>
+              <span>avoid</span>
+            </div>
+          </div>
+
+          <div style="border-radius:24px;padding:16px;background:rgba(255,255,255,0.74);border:1px solid rgba(31,33,48,0.08);margin-bottom:12px;">
+            <p style="font-size:14px;font-weight:500;color:#1F2130;margin-bottom:4px;">Journal Prompt</p>
+            <p style="font-size:13px;color:#7A7C8C;">What do I need but avoid asking for?</p>
+          </div>
+
+          <div style="border-radius:24px;padding:16px;background:rgba(255,255,255,0.74);border:1px solid rgba(31,33,48,0.08);">
+            <p style="font-size:14px;font-weight:500;color:#1F2130;margin-bottom:4px;">Best Move Today</p>
+            <p style="font-size:13px;color:#7A7C8C;">Say the thing before it becomes resentment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>Not astrology. Not therapy. <span style="background:linear-gradient(135deg,#8B72CF,#16A7A0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Something in between.</span></h2>
+    <p class="subtitle">Soulprint turns your empathetical nature into creative clarity — a private mirror that helps you understand what you feel, not just what happened.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon" style="background:linear-gradient(145deg,#F8DCCB,#F7D875)">🌊</div>
+        <h3>Emotional Blueprint</h3>
+        <p>You process intensity privately. By the time you express something, you've already thought it through three times. Soulprint sees that pattern — and makes it useful.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon" style="background:linear-gradient(145deg,#F4C7D2,#E8DDFB)">💕</div>
+        <h3>Love Pattern</h3>
+        <p>You don't need constant attention. You need emotional consistency. Decode how you seek closeness, what safety feels like, and what triggers your retreat.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon" style="background:linear-gradient(145deg,#E8DDFB,#DDEDDC)">✦</div>
+        <h3>Daily Signal</h3>
+        <p>A new reading every day — not generic astrology, but a pattern-aware insight that connects your chart, your lifepath, and your current emotional state.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon" style="background:linear-gradient(145deg,#DDEDDC,#9FD9D0)">🧭</div>
+        <h3>Shadow Self</h3>
+        <p>You sometimes use understanding as a shield. Soulprint gently reveals what you hide — even from your own language — and turns it into self-awareness.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon" style="background:linear-gradient(145deg,#F7D875,#F8DCCB)">📝</div>
+        <h3>Journal as Currency</h3>
+        <p>Write reflections to unlock deeper readings. Your emotional honesty becomes the key — not your credit card. Every reflection makes the app smarter about you.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon" style="background:linear-gradient(145deg,#9FD9D0,#DDEDDC)">🔗</div>
+        <h3>Compatibility</h3>
+        <p>Decode chemistry with someone. Not sun sign matching — real emotional pattern overlap. What draws you together, where friction lives, and how you grow together.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2>Your pattern is already <span style="background:linear-gradient(135deg,#8B72CF,#16A7A0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">running the show.</span></h2>
+    <p>Time to understand it.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="#" class="btn-primary">Try the Prototype</a>
+      <a href="https://github.com/regyanax/soulprint" target="_blank" class="btn-secondary">Star on GitHub ★</a>
+    </div>
+  </section>
+
+  <div class="tech-stack">
+    <h3>Built with</h3>
+    <div class="tech-pills">
+      <span class="tech-pill">React</span>
+      <span class="tech-pill">Vite</span>
+      <span class="tech-pill">Tailwind CSS</span>
+      <span class="tech-pill">Framer Motion</span>
+      <span class="tech-pill">Lucide Icons</span>
+    </div>
+  </div>
+
+  <footer>
+    <p>Soulprint Prototype — Turning empathetical nature into creative clarity.</p>
+  </footer>
+
+</body>
+</html>
