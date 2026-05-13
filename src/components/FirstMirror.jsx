@@ -8,20 +8,31 @@ const patternCards = [
   { title: 'Quiet Intensity', desc: 'You may look calm while processing deeply.' },
 ];
 
-export default function FirstMirror({ onContinue, onDeepDive, onSaveCard }) {
+export default function FirstMirror({ onContinue, onDeepDive, onSaveCard, onBack }) {
   const [feedback, setFeedback] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const handleContinue = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      onContinue();
-    }, 600);
-  };
   
   return (
     <div className="h-full flex flex-col">
       <div className="flex-1 overflow-y-auto scrollbar-hide px-5 pt-8 pb-4">
+        {onBack && (
+          <div className="flex items-center justify-between mb-4">
+            <div
+              className="w-[40px] h-[40px] rounded-full flex items-center justify-center"
+              style={{
+                background: 'rgba(255,255,255,0.76)',
+                border: '1px solid rgba(31,33,48,0.08)',
+                boxShadow: '0 12px 30px rgba(99, 82, 60, 0.09)'
+              }}
+              onClick={onBack}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M10 12L6 8L10 4" stroke="#1F2130" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <span className="text-[12px] text-muted-text">Snapshot</span>
+            <div className="w-[40px]" />
+          </div>
+        )}
         <motion.div 
           className="text-center mb-4"
           initial={{ opacity: 0, y: 20 }}
@@ -236,30 +247,14 @@ export default function FirstMirror({ onContinue, onDeepDive, onSaveCard }) {
       
       <div className="px-5 pb-4">
         <motion.button 
-          onClick={handleContinue}
-          disabled={isLoading}
-          className="w-full min-h-[48px] rounded-full px-6 font-extrabold text-sm text-white flex items-center justify-center gap-2"
+          onClick={onContinue}
+          className="w-full min-h-[48px] rounded-full px-6 font-extrabold text-sm text-white"
           style={{
-            background: isLoading 
-              ? 'rgba(139,114,207,0.6)' 
-              : 'linear-gradient(135deg, #8B72CF, #16A7A0)',
+            background: 'linear-gradient(135deg, #8B72CF, #16A7A0)',
             boxShadow: '0 8px 24px rgba(139,114,207,0.2)'
           }}
         >
-          {isLoading ? (
-            <>
-              <motion.span
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                className="inline-block"
-              >
-                ✦
-              </motion.span>
-              <span>Entering...</span>
-            </>
-          ) : (
-            'Continue to Today'
-          )}
+          Continue to Today
         </motion.button>
       </div>
     </div>

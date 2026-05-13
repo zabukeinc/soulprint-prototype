@@ -1,6 +1,9 @@
-import { Sun, Moon, Shield, CreditCard } from "lucide-react";
+import { Sun, Shield } from "lucide-react";
+import { useTier } from "../context/TierContext";
 
 export default function Profile({ onNavigate }) {
+  const { isPremium, toggleTier } = useTier();
+
   return (
     <div className="h-full flex flex-col">
       <div className="px-5 pt-10 pb-4 flex-1 overflow-y-auto scrollbar-hide">
@@ -52,6 +55,52 @@ export default function Profile({ onNavigate }) {
             >
               Bandung
             </span>
+            <span
+              className="px-3 py-1.5 rounded-full text-[12px] font-bold"
+              style={{
+                background: isPremium ? 'rgba(22,167,160,0.15)' : 'rgba(139,114,207,0.12)',
+                color: isPremium ? '#16A7A0' : '#7A63BD'
+              }}
+            >
+              {isPremium ? '✦ Premium' : 'Free'}
+            </span>
+          </div>
+        </div>
+
+        <div
+          className="rounded-[24px] p-4 mb-4"
+          style={{
+            background: isPremium
+              ? 'linear-gradient(135deg, rgba(22,167,160,0.1), rgba(139,114,207,0.1))'
+              : 'rgba(255,255,255,0.78)',
+            border: isPremium
+              ? '1px solid rgba(22,167,160,0.2)'
+              : '1px solid rgba(31,33,48,0.08)',
+          }}
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[14px] font-medium text-ink">
+                {isPremium ? '✦ Premium Unlocked' : 'Preview Mode'}
+              </p>
+              <p className="text-[12px] text-muted-text">
+                {isPremium
+                  ? 'All features unlocked. See the full experience.'
+                  : 'Viewing as a free user. Switch to see premium.'}
+              </p>
+            </div>
+            <button
+              onClick={toggleTier}
+              className="px-3 py-2 rounded-full text-[12px] font-bold"
+              style={{
+                background: isPremium
+                  ? 'rgba(22,167,160,0.15)'
+                  : 'linear-gradient(135deg, #8B72CF, #16A7A0)',
+                color: isPremium ? '#16A7A0' : 'white',
+              }}
+            >
+              {isPremium ? 'Switch to Free' : 'Unlock All'}
+            </button>
           </div>
         </div>
 
@@ -101,10 +150,8 @@ export default function Profile({ onNavigate }) {
             style={{cursor: 'pointer'}}
           >
             <div>
-              <div>
-                <p className="text-[14px] font-medium text-ink">Subscription</p>
-                <p className="text-[12px] text-muted-text">Manage your plan</p>
-              </div>
+              <p className="text-[14px] font-medium text-ink">Subscription</p>
+              <p className="text-[12px] text-muted-text">Manage your plan</p>
             </div>
             <span className="text-muted-text">→</span>
           </a>
@@ -122,27 +169,6 @@ export default function Profile({ onNavigate }) {
 
         <div
           className="rounded-[24px] border p-4 mb-4"
-          style={{
-            background: "rgba(244,199,210,0.3)",
-            border: "1px solid rgba(31,33,48,0.08)",
-          }}
-        >
-          <div className="flex items-center gap-3">
-            <Sun size={18} className="text-ink opacity-60" />
-            <div>
-              <p className="text-[14px] font-medium text-ink">
-                Connected Accounts
-              </p>
-              <p className="text-[12px] text-muted-text">
-                Link your calendar, notes, or mood apps to enrich your Soulprint
-                with context.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div
-          className="rounded-[24px] border p-4 mb-5"
           style={{
             background: "rgba(221,237,220,0.3)",
             border: "1px solid rgba(31,33,48,0.08)",

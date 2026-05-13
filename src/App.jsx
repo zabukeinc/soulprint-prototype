@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PhoneFrame from './components/PhoneFrame';
+import { TierProvider, useTier } from './context/TierContext';
 
 import Welcome from './components/Welcome';
 import BirthDate from './components/BirthDate';
@@ -11,10 +12,11 @@ import Generating from './components/Generating';
 import FirstMirror from './components/FirstMirror';
 import Today from './components/Today';
 import Soulprint from './components/Soulprint';
-import Snapshot from './components/Snapshot';
 import ShareCard from './components/ShareCard';
 import Decode from './components/Decode';
-import Archive from './components/Archive';
+import LoveReading from './components/LoveReading';
+import CompatibilityReading from './components/CompatibilityReading';
+import Keepsake from './components/Keepsake';
 import Profile from './components/Profile';
 import Pricing from './components/Pricing';
 
@@ -28,21 +30,24 @@ const onboardingFlow = [
   'generating',
 ];
 
-const mainAppTabs = ['today', 'soulprint', 'decode', 'archive', 'profile'];
+const mainAppTabs = ['today', 'soulprint', 'decode', 'keepsake', 'profile'];
 
 const onboardingResultScreens = ['firstMirror', 'pricing'];
+const detailScreens = ['love', 'compatibility', 'shareCard'];
 
-export default function App() {
+function AppInner() {
   const [currentScreen, setCurrentScreen] = useState('welcome');
   const [showNav, setShowNav] = useState(false);
-  
+  const [previousScreen, setPreviousScreen] = useState(null);
+
   const navigate = (screen) => {
     if (mainAppTabs.includes(screen)) {
       setShowNav(true);
     }
+    setPreviousScreen(currentScreen);
     setCurrentScreen(screen);
   };
-  
+
   const handleNext = () => {
     const currentIndex = onboardingFlow.indexOf(currentScreen);
     if (currentIndex < onboardingFlow.length - 1) {
@@ -50,27 +55,37 @@ export default function App() {
       setCurrentScreen(nextScreen);
     }
   };
-  
+
   const handleGeneratingComplete = () => {
     setCurrentScreen('firstMirror');
   };
-  
+
   const handleFirstMirrorContinue = () => {
-    setShowNav(true);
-    navigate('today');
+    setCurrentScreen('today');
+    setTimeout(() => setShowNav(true), 350);
   };
-  
+
   const handleFirstMirrorDeepDive = () => {
     setCurrentScreen('pricing');
   };
-  
+
   const handlePricingBack = () => {
     setCurrentScreen('firstMirror');
   };
-  
+
+  const handleDetailBack = () => {
+    if (previousScreen && mainAppTabs.includes(previousScreen)) {
+      setCurrentScreen(previousScreen);
+    } else {
+      setCurrentScreen('today');
+    }
+  };
+
   const handleBack = () => {
-    if (currentScreen === 'snapshot' || currentScreen === 'shareCard') {
+    if (currentScreen === 'shareCard') {
       setCurrentScreen('soulprint');
+    } else if (detailScreens.includes(currentScreen)) {
+      handleDetailBack();
     } else if (onboardingResultScreens.includes(currentScreen)) {
       setCurrentScreen('firstMirror');
     } else {
@@ -82,7 +97,7 @@ export default function App() {
       }
     }
   };
-  
+
   const renderScreen = () => {
     switch (currentScreen) {
       case 'welcome':
@@ -100,8 +115,8 @@ export default function App() {
       case 'generating':
         return <Generating onComplete={handleGeneratingComplete} />;
       case 'firstMirror':
-        return <FirstMirror 
-          onContinue={handleFirstMirrorContinue} 
+        return <FirstMirror
+          onContinue={handleFirstMirrorContinue}
           onDeepDive={handleFirstMirrorDeepDive}
         />;
       case 'pricing':
@@ -111,25 +126,41 @@ export default function App() {
       case 'soulprint':
         return <Soulprint onNavigate={navigate} />;
       case 'snapshot':
-        return <Snapshot onBack={handleBack} onNavigate={navigate} />;
+        return <FirstMirror
+          onContinue={handleFirstMirrorContinue}
+          onDeepDive={handleFirstMirrorDeepDive}
+          onBack={() => setCurrentScreen('soulprint')}
+        />;
       case 'shareCard':
         return <ShareCard onBack={handleBack} onNavigate={navigate} />;
       case 'decode':
-        return <Decode />;
-      case 'archive':
-        return <Archive />;
+        return <Decode onNavigate={navigate} />;
+      case 'love':
+        return <LoveReading onBack={handleDetailBack} />;
+      case 'compatibility':
+        return <CompatibilityReading onBack={handleDetailBack} />;
+      case 'keepsake':
+        return <Keepsake onNavigate={navigate} />;
       case 'profile':
         return <Profile onNavigate={navigate} />;
       default:
         return <Welcome onNext={handleNext} />;
     }
   };
-  
+
   const shouldShowNav = showNav && mainAppTabs.includes(currentScreen);
-  
+
   return (
     <PhoneFrame currentScreen={currentScreen} onNavigate={navigate} showNav={shouldShowNav}>
       {renderScreen()}
     </PhoneFrame>
+  );
+}
+
+export default function App() {
+  return (
+    <TierProvider>
+      <AppInner />
+    </TierProvider>
   );
 }

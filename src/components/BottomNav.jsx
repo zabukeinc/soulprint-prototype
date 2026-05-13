@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
-import { Home, Sparkles, BookOpen, Archive, User } from 'lucide-react';
+import { Home, Sparkles, BookOpen, Bookmark, User } from 'lucide-react';
 
 const tabs = [
   { id: 'today', label: 'Today', icon: Home },
   { id: 'soulprint', label: 'Soul', icon: Sparkles },
   { id: 'decode', label: 'Decode', icon: BookOpen },
-  { id: 'archive', label: 'Archive', icon: Archive },
+  { id: 'keepsake', label: 'Keepsake', icon: Bookmark },
   { id: 'profile', label: 'Profile', icon: User },
 ];
 

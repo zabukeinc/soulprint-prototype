@@ -1,7 +1,16 @@
+import { useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import BottomNav from './BottomNav';
 
 export default function PhoneFrame({ children, currentScreen, onNavigate, showNav }) {
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [currentScreen]);
+
   return (
     <div className="flex items-center justify-center min-h-screen p-4">
       <motion.div 
@@ -36,7 +45,7 @@ export default function PhoneFrame({ children, currentScreen, onNavigate, showNa
               className="w-[88px] h-[24px] bg-[#050506] absolute top-[10px] left-1/2 -translate-x-1/2 rounded-b-2xl z-50"
             />
             <div className="h-full flex flex-col relative z-10">
-              <div className={`flex-1 overflow-y-auto scrollbar-hide ${showNav ? 'pb-0' : ''}`}>
+              <div ref={scrollRef} className={`flex-1 overflow-y-auto scrollbar-hide ${showNav ? 'pb-0' : ''}`}>
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentScreen}
