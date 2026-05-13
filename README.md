@@ -2,6 +2,10 @@
 
 > Turning empathetical nature into creative clarity and apps.
 
+## Preview
+
+![Soulprint app preview](showcase.png)
+
 A warm, private self-discovery app that reads the pattern beneath your chart — not just what you were born with, but how you carry it. Soulprint helps people who feel more than they show understand their emotional blueprint through astrology, lifepath numerology, MBTI, and AI-guided reflection.
 
 This project was born from a simple belief: **empathy isn't a weakness to manage — it's a design to understand.** Every overthinker, every private processor, every person who feels the room before they speak deserves a tool that speaks their language.
@@ -42,7 +46,7 @@ Every onboarding screen fits in the phone frame without scrolling. The emotional
 ## Screenshots
 
 ### Today — Daily Ritual
-![Today screen](showcase.html)
+![Today screen](showcase.png)
 
 Run `showcase.html` in a browser to see the full landing page with interactive phone mockup.
 
