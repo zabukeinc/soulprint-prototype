@@ -58,7 +58,6 @@ export default function Welcome({ onNext }) {
         >
           Begin gently
         </button>
-        <ProgressDots total={3} current={0} />
       </div>
     </div>
   );

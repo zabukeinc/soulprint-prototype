@@ -17,7 +17,7 @@ import ShareCard from './components/ShareCard';
 import Decode from './components/Decode';
 import LoveReading from './components/LoveReading';
 import CompatibilityReading from './components/CompatibilityReading';
-import Keepsake from './components/Keepsake';
+import Mirror from './components/Mirror';
 import Profile from './components/Profile';
 import Pricing from './components/Pricing';
 
@@ -31,7 +31,7 @@ const onboardingFlow = [
   'generating',
 ];
 
-const mainAppTabs = ['today', 'soulprint', 'decode', 'keepsake', 'profile'];
+const mainAppTabs = ['today', 'soulprint', 'decode', 'mirror', 'profile'];
 
 const onboardingResultScreens = ['firstMirror', 'pricing'];
 const detailScreens = ['love', 'compatibility', 'shareCard'];
@@ -141,8 +141,8 @@ function AppInner() {
         return <LoveReading onBack={handleDetailBack} />;
       case 'compatibility':
         return <CompatibilityReading onBack={handleDetailBack} />;
-      case 'keepsake':
-        return <Keepsake onNavigate={navigate} engagement={engagement} />;
+      case 'mirror':
+        return <Mirror onNavigate={navigate} engagement={engagement} />;
       case 'profile':
         return <Profile onNavigate={navigate} />;
       default:

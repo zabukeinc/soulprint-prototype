@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 function getTimeGreeting() {
   const hour = new Date().getHours();
@@ -119,6 +119,28 @@ export default function Today({ onNavigate, engagement }) {
   return (
     <div className="h-full flex flex-col">
       <div className="px-5 pt-10 pb-4 flex-1 overflow-y-auto scrollbar-hide">
+        <AnimatePresence>
+          {showToast && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="mb-4"
+            >
+              <div
+                className="rounded-[20px] px-4 py-3 flex items-center gap-3"
+                style={{
+                  background: 'linear-gradient(135deg, #8B72CF, #16A7A0)',
+                  boxShadow: '0 8px 24px rgba(139,114,207,0.25)'
+                }}
+              >
+                <span className="text-[18px]">✓</span>
+                <p className="text-[13px] text-white font-medium flex-1">{toastMessage}</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-[12px] text-muted-text">{getTimeGreeting()} {getTimeEmoji()}</p>
@@ -465,27 +487,6 @@ export default function Today({ onNavigate, engagement }) {
           <span className="text-muted-text">→</span>
         </button>
       </div>
-
-      {showToast && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
-          className="px-5 pb-4"
-        >
-          <div
-            className="rounded-[20px] p-4 flex items-center gap-3"
-            style={{
-              background: 'linear-gradient(135deg, #8B72CF, #16A7A0)',
-              boxShadow: '0 12px 30px rgba(139,114,207,0.3)'
-            }}
-          >
-            <span className="text-[20px]">✓</span>
-            <p className="text-[13px] text-white font-medium flex-1">{toastMessage}</p>
-          </div>
-        </motion.div>
-      )}
     </div>
   );
 }
