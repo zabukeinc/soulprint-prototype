@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PhoneFrame from './components/PhoneFrame';
 import { TierProvider, useTier } from './context/TierContext';
+import { useEngagement } from './hooks/useEngagement';
 
 import Welcome from './components/Welcome';
 import BirthDate from './components/BirthDate';
@@ -39,6 +40,7 @@ function AppInner() {
   const [currentScreen, setCurrentScreen] = useState('welcome');
   const [showNav, setShowNav] = useState(false);
   const [previousScreen, setPreviousScreen] = useState(null);
+  const engagement = useEngagement();
 
   const navigate = (screen) => {
     if (mainAppTabs.includes(screen)) {
@@ -61,8 +63,8 @@ function AppInner() {
   };
 
   const handleFirstMirrorContinue = () => {
+    setShowNav(true);
     setCurrentScreen('today');
-    setTimeout(() => setShowNav(true), 350);
   };
 
   const handleFirstMirrorDeepDive = () => {
@@ -122,7 +124,7 @@ function AppInner() {
       case 'pricing':
         return <Pricing onBack={handlePricingBack} />;
       case 'today':
-        return <Today onNavigate={navigate} />;
+        return <Today onNavigate={navigate} engagement={engagement} />;
       case 'soulprint':
         return <Soulprint onNavigate={navigate} />;
       case 'snapshot':
@@ -134,13 +136,13 @@ function AppInner() {
       case 'shareCard':
         return <ShareCard onBack={handleBack} onNavigate={navigate} />;
       case 'decode':
-        return <Decode onNavigate={navigate} />;
+        return <Decode onNavigate={navigate} engagement={engagement} />;
       case 'love':
         return <LoveReading onBack={handleDetailBack} />;
       case 'compatibility':
         return <CompatibilityReading onBack={handleDetailBack} />;
       case 'keepsake':
-        return <Keepsake onNavigate={navigate} />;
+        return <Keepsake onNavigate={navigate} engagement={engagement} />;
       case 'profile':
         return <Profile onNavigate={navigate} />;
       default:

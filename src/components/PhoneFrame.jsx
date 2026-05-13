@@ -45,7 +45,7 @@ export default function PhoneFrame({ children, currentScreen, onNavigate, showNa
               className="w-[88px] h-[24px] bg-[#050506] absolute top-[10px] left-1/2 -translate-x-1/2 rounded-b-2xl z-50"
             />
             <div className="h-full flex flex-col relative z-10">
-              <div ref={scrollRef} className={`flex-1 overflow-y-auto scrollbar-hide ${showNav ? 'pb-0' : ''}`}>
+              <div ref={scrollRef} className={`flex-1 overflow-y-auto scrollbar-hide ${showNav ? 'pb-[80px]' : ''}`}>
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentScreen}
@@ -59,14 +59,14 @@ export default function PhoneFrame({ children, currentScreen, onNavigate, showNa
                   </motion.div>
                 </AnimatePresence>
               </div>
-              <AnimatePresence>
-                {showNav && (
-                  <BottomNav currentScreen={currentScreen} onNavigate={onNavigate} />
-                )}
-              </AnimatePresence>
             </div>
           </div>
         </div>
+        {showNav && (
+          <div className="absolute bottom-[15px] left-[15px] right-[15px] z-40">
+            <BottomNav currentScreen={currentScreen} onNavigate={onNavigate} />
+          </div>
+        )}
       </motion.div>
     </div>
   );

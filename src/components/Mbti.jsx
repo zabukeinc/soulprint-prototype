@@ -85,9 +85,10 @@ export default function Mbti({ onNext, onSkip, onBack }) {
       </div>
       
       <div className="space-y-3">
-        <button 
+        <button
+          disabled={!selected}
           onClick={onNext}
-          className="w-full min-h-[54px] rounded-full px-6 font-extrabold text-sm text-white"
+          className="w-full min-h-[54px] rounded-full px-6 font-extrabold text-sm text-white disabled:opacity-50 disabled:cursor-not-allowed"
           style={{
             background: 'linear-gradient(135deg, #8B72CF, #16A7A0)',
             boxShadow: '0 14px 30px rgba(139,114,207,0.22)'

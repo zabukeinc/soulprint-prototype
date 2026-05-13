@@ -12,10 +12,10 @@ const tabs = [
 export default function BottomNav({ currentScreen, onNavigate }) {
   return (
     <motion.div
-      initial={{ y: 100, opacity: 0 }}
+      initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
-      className="mx-3 mb-3 rounded-[26px] overflow-hidden"
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+      className="rounded-[26px] overflow-hidden"
       style={{
         height: '68px',
         background: 'rgba(255,255,255,0.82)',

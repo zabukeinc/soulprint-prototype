@@ -2,35 +2,35 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTier } from '../context/TierContext';
 
-const filters = ['All', 'Insights', 'Cards', 'Readings'];
+const staticFilters = ['All', 'Insights', 'Cards', 'Readings', 'Reflections'];
 
-const allItems = [
+const staticItems = [
   {
-    id: 1,
+    id: 's1',
     type: 'Insight',
     category: 'insights',
     icon: '✦',
     gradient: 'linear-gradient(145deg, #E8DDFB, #DDEDDC)',
     title: 'Free Soulprint Snapshot',
-    subtitle: 'Today · Emotional pattern',
+    subtitle: 'Emotional pattern',
     preview: 'You process deeply before you explain. Your stillness is not distance.',
     date: 'Today',
     locked: false,
   },
   {
-    id: 2,
+    id: 's2',
     type: 'Card',
     category: 'cards',
     icon: '💕',
     gradient: 'linear-gradient(145deg, #F4C7D2, #E8DDFB)',
     title: 'Love Pattern Card',
     subtitle: 'Saved share card',
-    preview: 'You don\'t need constant attention. You need emotional consistency.',
+    preview: "You don't need constant attention. You need emotional consistency.",
     date: 'Today',
     locked: false,
   },
   {
-    id: 3,
+    id: 's3',
     type: 'Insight',
     category: 'insights',
     icon: '🌊',
@@ -42,7 +42,7 @@ const allItems = [
     locked: false,
   },
   {
-    id: 4,
+    id: 's4',
     type: 'Card',
     category: 'cards',
     icon: '🌿',
@@ -54,7 +54,7 @@ const allItems = [
     locked: false,
   },
   {
-    id: 5,
+    id: 's5',
     type: 'Reading',
     category: 'readings',
     icon: '☆',
@@ -66,7 +66,7 @@ const allItems = [
     locked: true,
   },
   {
-    id: 6,
+    id: 's6',
     type: 'Reading',
     category: 'readings',
     icon: '💕',
@@ -78,7 +78,7 @@ const allItems = [
     locked: true,
   },
   {
-    id: 7,
+    id: 's7',
     type: 'Reading',
     category: 'readings',
     icon: '🔗',
@@ -91,9 +91,24 @@ const allItems = [
   },
 ];
 
-export default function Keepsake({ onNavigate }) {
+export default function Keepsake({ onNavigate, engagement }) {
   const [activeFilter, setActiveFilter] = useState('All');
   const { isPremium } = useTier();
+
+  const journalEntries = (engagement?.journalEntries || []).map((entry) => ({
+    id: `j-${entry.id}`,
+    type: 'Reflection',
+    category: 'reflections',
+    icon: '📝',
+    gradient: 'linear-gradient(145deg, #DDEDDC, #9FD9D0)',
+    title: entry.prompt || 'Journal Reflection',
+    subtitle: entry.date,
+    preview: entry.text,
+    date: entry.date,
+    locked: false,
+  }));
+
+  const allItems = [...journalEntries, ...staticItems];
 
   const filtered = activeFilter === 'All'
     ? allItems
@@ -111,96 +126,130 @@ export default function Keepsake({ onNavigate }) {
           Your private library. Reflections, cards, and readings that felt true.
         </p>
 
-        <div className="flex gap-2 mb-4">
-          {filters.map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className="px-3 py-1.5 rounded-full text-[11px] font-bold"
-              style={{
-                background: activeFilter === filter
-                  ? 'linear-gradient(135deg, #8B72CF, #16A7A0)'
-                  : 'rgba(255,255,255,0.72)',
-                color: activeFilter === filter ? 'white' : '#7A7C8C',
-                border: activeFilter === filter ? 'none' : '1px solid rgba(31,33,48,0.08)',
-                transition: 'background 0.2s, color 0.2s, border 0.2s'
-              }}
-            >
-              {filter}
-            </button>
-          ))}
-        </div>
-
-        <div className="space-y-[10px]">
-          {filtered.map((item) => {
-            const isLocked = item.locked && !isPremium;
-
+        <div className="flex gap-1.5 mb-4 flex-wrap">
+          {staticFilters.map((filter) => {
+            const count = filter === 'All'
+              ? allItems.length
+              : filter === 'Reflections'
+                ? journalEntries.length
+                : allItems.filter((item) => item.category === filter.toLowerCase()).length;
+            if (filter !== 'All' && filter !== 'Reflections' && count === 0) return null;
             return (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-[22px] border p-4"
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className="px-3 py-1.5 rounded-full text-[11px] font-bold"
                 style={{
-                  background: isLocked
-                    ? 'linear-gradient(145deg, rgba(232,221,251,0.4), rgba(255,255,255,0.6))'
-                    : item.locked
-                      ? 'rgba(255,255,255,0.9)'
-                      : 'rgba(255,255,255,0.74)',
-                  border: isLocked
-                    ? '1px solid rgba(139,114,207,0.18)'
-                    : '1px solid rgba(31,33,48,0.08)',
-                  boxShadow: '0 8px 18px rgba(99,82,60,0.05)',
-                  opacity: isLocked ? 0.65 : 1,
+                  background: activeFilter === filter
+                    ? 'linear-gradient(135deg, #8B72CF, #16A7A0)'
+                    : 'rgba(255,255,255,0.72)',
+                  color: activeFilter === filter ? 'white' : '#7A7C8C',
+                  border: activeFilter === filter ? 'none' : '1px solid rgba(31,33,48,0.08)',
+                  transition: 'background 0.2s, color 0.2s, border 0.2s'
                 }}
               >
-                <div className="flex items-start gap-3">
-                  <div
-                    className="w-10 h-10 rounded-[14px] flex items-center justify-center flex-shrink-0"
-                    style={{ background: item.gradient }}
-                  >
-                    <span className="text-[16px]">{isLocked ? '🔒' : item.icon}</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-0.5">
-                      <h4 className="text-[14px] font-medium text-ink">{item.title}</h4>
-                      {isLocked && (
-                        <span
-                          className="text-[10px] font-extrabold px-2 py-0.5 rounded-full flex-shrink-0"
-                          style={{
-                            background: 'rgba(255,255,255,0.52)',
-                            border: '1px solid rgba(139,114,207,0.18)',
-                            color: '#7A63BD'
-                          }}
-                        >
-                          Locked
-                        </span>
-                      )}
-                      {!isLocked && item.locked && (
-                        <span
-                          className="text-[10px] font-extrabold px-2 py-0.5 rounded-full flex-shrink-0"
-                          style={{
-                            background: 'rgba(22,167,160,0.1)',
-                            color: '#16A7A0'
-                          }}
-                        >
-                          ✦ Open
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-[11px] text-muted-text mb-1">{item.subtitle}</p>
-                    {(isLocked || !item.locked) && (
-                      <p className="text-[12px] text-ink/70 leading-[1.4] line-clamp-2">{item.preview}</p>
-                    )}
-                    {item.date && (
-                      <p className="text-[10px] text-muted-text/60 mt-1">{item.date}</p>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
+                {filter}{filter === 'Reflections' && count > 0 ? ` ${count}` : ''}
+              </button>
             );
           })}
         </div>
+
+        {filtered.length === 0 ? (
+          <div
+            className="rounded-[24px] p-6 text-center mb-4"
+            style={{
+              background: 'rgba(255,255,255,0.6)',
+              border: '1px solid rgba(31,33,48,0.06)'
+            }}
+          >
+            <p className="text-[14px] font-medium text-ink mb-1">No reflections yet</p>
+            <p className="text-[12px] text-muted-text">Write your first journal entry on the Today page.</p>
+          </div>
+        ) : (
+          <div className="space-y-[10px]">
+            {filtered.map((item) => {
+              const isLocked = item.locked && !isPremium;
+
+              return (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-[22px] border p-4"
+                  style={{
+                    background: isLocked
+                      ? 'linear-gradient(145deg, rgba(232,221,251,0.4), rgba(255,255,255,0.6))'
+                      : item.category === 'reflections'
+                        ? 'linear-gradient(135deg, rgba(221,237,220,0.3), rgba(255,255,255,0.6))'
+                        : 'rgba(255,255,255,0.74)',
+                    border: isLocked
+                      ? '1px solid rgba(139,114,207,0.18)'
+                      : item.category === 'reflections'
+                        ? '1px solid rgba(22,167,160,0.15)'
+                        : '1px solid rgba(31,33,48,0.08)',
+                    boxShadow: '0 8px 18px rgba(99,82,60,0.05)',
+                    opacity: isLocked ? 0.65 : 1,
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <div
+                      className="w-10 h-10 rounded-[14px] flex items-center justify-center flex-shrink-0"
+                      style={{ background: item.gradient }}
+                    >
+                      <span className="text-[16px]">{isLocked ? '🔒' : item.icon}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-0.5">
+                        <h4 className="text-[14px] font-medium text-ink">{item.title}</h4>
+                        {isLocked && (
+                          <span
+                            className="text-[10px] font-extrabold px-2 py-0.5 rounded-full flex-shrink-0"
+                            style={{
+                              background: 'rgba(255,255,255,0.52)',
+                              border: '1px solid rgba(139,114,207,0.18)',
+                              color: '#7A63BD'
+                            }}
+                          >
+                            Locked
+                          </span>
+                        )}
+                        {!isLocked && item.locked && (
+                          <span
+                            className="text-[10px] font-extrabold px-2 py-0.5 rounded-full flex-shrink-0"
+                            style={{
+                              background: 'rgba(22,167,160,0.1)',
+                              color: '#16A7A0'
+                            }}
+                          >
+                            ✦ Open
+                          </span>
+                        )}
+                        {item.category === 'reflections' && !isLocked && (
+                          <span
+                            className="text-[10px] font-extrabold px-2 py-0.5 rounded-full flex-shrink-0"
+                            style={{
+                              background: 'rgba(22,167,160,0.1)',
+                              color: '#16A7A0'
+                            }}
+                          >
+                            You
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-muted-text mb-1">{item.subtitle}</p>
+                      {(isLocked || !item.locked || item.category === 'reflections') && (
+                        <p className="text-[12px] text-ink/70 leading-[1.4] line-clamp-2">{item.preview}</p>
+                      )}
+                      {item.date && (
+                        <p className="text-[10px] text-muted-text/60 mt-1">{item.date}</p>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
 
         {!isPremium && (
           <button
