@@ -130,6 +130,14 @@ This isn't a content app. It's a mirror that gets sharper every time you look in
 
 ---
 
+## Background
+
+Soulprint is currently a prototype, created to explore how emotional self-discovery can feel warm, personal, and practical in a digital product.
+
+This concept comes from my own personality and lived experience: I am a deeply empathetic person, I identify as INFJ, and I am Aquarius. The app reflects that perspective by focusing on emotional patterns, quiet reflection, and meaning-making rather than productivity pressure.
+
+---
+
 ## License
 
 This is a prototype. All rights reserved.
